@@ -15,10 +15,19 @@ app.post('/create', function (req, res) {
   createUser(body, res);
 })
 
+app.post('/update', function (req, res) {
+  var body = req.body;
+  updateUser(body, res);
+})
+
 app.post('/find', function (req, res) {
   var body = req.body;
   findUser(body.user, res);
+});
 
+app.get('/resume/:id', function (req, res) {
+  var user = req.params.id;
+  getResume(user, res);
 });
 
 app.listen(port)
@@ -37,7 +46,21 @@ var createUser = function(body,res){
         return res.status(200).send("created!");
       });
     } else if(doc != null){
-        return res.status(200).send("exists");
+      return res.status(200).send("exists");
+    }
+  });
+
+};
+
+var updateUser = function(body,res){
+
+  mycollection.findAndModify({
+    query: { username: body.username, password: body.password },
+    update: { $set: { resume: body.resume } },
+    new: true
+  }, function (err, doc, lastErrorObject) {
+    if (!err){
+      return res.status(200).send("updated!");
     }
   });
 
@@ -47,5 +70,12 @@ var findUser = function(user, res){
 
   mycollection.findOne({username: user}, function(err, doc) {
     return res.status(200).send(doc);
+  });
+};
+
+var getResume = function(user, res){
+
+  mycollection.findOne({username: user}, function(err, doc) {
+    return res.status(200).send(doc.resume);
   });
 };
