@@ -1,0 +1,16 @@
+{
+  "name": "res-gen",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "virgilvox <moheeb.zara@citrix.com> (http://app.octoblu.com/)",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "express": "^4.13.3",
+    "mongojs": "^2.2.2"
+  }
+}
