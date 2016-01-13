@@ -1,9 +1,11 @@
 var mongojs = require('mongojs')
 var express = require('express')
+var cors = require('cors')
 var config  = require('./config.json')
 var app = express()
 var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
 
 var db = mongojs(config.connectionString);
 var mycollection = db.collection('users');
@@ -22,7 +24,12 @@ app.post('/update', function (req, res) {
 
 app.post('/find', function (req, res) {
   var body = req.body;
-  findUser(body.user, res);
+  findUser(body.username, res);
+});
+
+app.post('/login-user', function (req, res) {
+  var body = req.body;
+  login(body, res);
 });
 
 app.get('/resume/:id', function (req, res) {
@@ -70,6 +77,14 @@ var findUser = function(user, res){
 
   mycollection.findOne({username: user}, function(err, doc) {
     return res.status(200).send(doc);
+  });
+};
+
+var login = function(body, res){
+  mycollection.findOne({"username": body.username}, function(err, doc) {
+    if(!err && doc != null && doc.password == body.password){
+      return res.status(200).send(doc);
+    }
   });
 };
 
