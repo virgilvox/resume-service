@@ -42,7 +42,7 @@ app.listen(port)
 
 var createUser = function(body,res){
 
-  var blank = {};
+  var blank = {"expertise":[{"data":[],"expertiseType": ""}],"experience":[{"contents":[{"tags":[],"name":"","startEndYears":"","subtitle":"","description":""}],"expertiseType":""}],"education":{"relatedCoursework":[],"major":"","graduationYear":"","university":""},"firstName":"","lastName":"","contactInfo":{"email":"","phone":"","github":"","twitter":""}};
 
   mycollection.findOne({username: body.username}, function(err, doc) {
     if(doc == null){
