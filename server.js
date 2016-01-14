@@ -5,6 +5,7 @@ var config  = require('./config.json')
 var app = express()
 var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cors());
 
 var db = mongojs(config.connectionString);
@@ -47,7 +48,7 @@ var createUser = function(body,res){
         username: body.username,
         password: body.password,
         email: body.email,
-        resume: body.resume
+        resume: {}
       };
       mycollection.insert(user, function(err,value){
         return res.status(200).send("created!");
@@ -89,7 +90,6 @@ var login = function(body, res){
 };
 
 var getResume = function(user, res){
-
   mycollection.findOne({username: user}, function(err, doc) {
     return res.status(200).send(doc.resume);
   });
