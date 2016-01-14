@@ -42,13 +42,15 @@ app.listen(port)
 
 var createUser = function(body,res){
 
+  var blank = {};
+
   mycollection.findOne({username: body.username}, function(err, doc) {
     if(doc == null){
       var user = {
         username: body.username,
         password: body.password,
         email: body.email,
-        resume: {}
+        resume: blank
       };
       mycollection.insert(user, function(err,value){
         return res.status(200).send("created!");
